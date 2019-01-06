@@ -1,5 +1,7 @@
 package spring.controller;
 
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import spring.service.UserService;
 
@@ -21,28 +22,32 @@ public class UserController {
 
     private final UserService userServiceImpl;
 
+
+    private final
+    AuthenticationTrustResolver authenticationTrustResolver;
+
     @Autowired
-    public UserController(UserService userServiceImpl) {
+    public UserController(UserService userServiceImpl, AuthenticationTrustResolver authenticationTrustResolver) {
         this.userServiceImpl = userServiceImpl;
+        this.authenticationTrustResolver = authenticationTrustResolver;
     }
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(value = "error",required = false) String error,
-                                  @RequestParam(value = "logout",	required = false) String logout) {
-
-        ModelAndView model = new ModelAndView();
-        if (error != null) {
-            model.addObject("error", "Invalid Credentials provided.");
+    public String loginPage() {
+        if (isCurrentAuthenticationAnonymous()) {
+            return "login";
         }
-
-        if (logout != null) {
-            model.addObject("message", "Logged out from JournalDEV successfully.");
-        }
-
-        model.setViewName("login");
-        return model;
+        return null;
     }
+
+
+    private boolean isCurrentAuthenticationAnonymous() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authenticationTrustResolver.isAnonymous(authentication);
+    }
+
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView getAllUsers(ModelAndView model){
         List<User> userList = userServiceImpl.getAllUser();
@@ -95,7 +100,7 @@ public class UserController {
     }
 
     private String getPrincipal(){
-        String userName = null;
+        String userName;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
