@@ -6,7 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Login page</title>
-    <link rel="stylesheet" type="text/css" href="<c:url value="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css"/>" />
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
 </head>
 
 <body>
@@ -28,12 +28,13 @@
                     </c:if>
                     <div class="input-group input-sm">
                         <label class="input-group-addon" for="login"><i class="fa fa-user"></i></label>
-                        <input type="text" class="form-control" id="login" name="ssoId" placeholder="Enter Login" required>
+                        <input type="text" class="form-control" id="login" name="login" placeholder="Enter Login" required>
                     </div>
                     <div class="input-group input-sm">
                         <label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
                     </div>
+
                     <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />
 
                     <div class="form-actions">
@@ -48,4 +49,3 @@
 
 </body>
 </html>
-

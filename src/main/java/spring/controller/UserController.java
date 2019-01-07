@@ -19,6 +19,7 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping("/")
 public class UserController {
 
     private final UserService userServiceImpl;
@@ -33,8 +34,7 @@ public class UserController {
         this.authenticationTrustResolver = authenticationTrustResolver;
     }
 
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
         if (isCurrentAuthenticationAnonymous()) {
             return "login";
@@ -49,7 +49,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getAllUsers(ModelAndView model){
         List<User> userList = userServiceImpl.getAllUser();
         model.addObject("listUsers", userList);
