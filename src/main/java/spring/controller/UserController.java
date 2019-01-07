@@ -19,7 +19,6 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/")
 public class UserController {
 
     private final UserService userServiceImpl;
@@ -72,7 +71,7 @@ public class UserController {
     public ModelAndView deleteUser(HttpServletRequest request) {
         Long userId = Long.valueOf(request.getParameter("id"));
         userServiceImpl.deleteUser(userId);
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/admin");
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.GET)
@@ -86,7 +85,7 @@ public class UserController {
     @RequestMapping(value = "/saveUser", method = RequestMethod.POST)
     public ModelAndView saveUser(@ModelAttribute("UserForm") User user) {
         userServiceImpl.saveOrUpdate(user);
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/admin");
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
