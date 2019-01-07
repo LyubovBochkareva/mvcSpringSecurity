@@ -17,7 +17,9 @@ import spring.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
 @Controller
+@RequestMapping("/")
 public class UserController {
 
     private final UserService userServiceImpl;
