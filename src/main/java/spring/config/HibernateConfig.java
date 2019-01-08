@@ -9,6 +9,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import spring.model.Authorities;
+import spring.model.User;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -45,6 +47,7 @@ public class HibernateConfig {
         LocalSessionFactoryBean asfb = new LocalSessionFactoryBean();
         asfb.setDataSource(dataSource());
         asfb.setHibernateProperties(getHibernateProperties());
+        asfb.setAnnotatedClasses(User.class, Authorities.class);
         asfb.setPackagesToScan("spring");
         return asfb;
     }

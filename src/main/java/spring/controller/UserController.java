@@ -1,7 +1,5 @@
 package spring.controller;
 
-import org.springframework.security.authentication.AuthenticationTrustResolver;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import spring.service.UserService;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -26,29 +23,10 @@ public class UserController {
 
     private final UserService userServiceImpl;
 
-
-    private final
-    AuthenticationTrustResolver authenticationTrustResolver;
-
     @Autowired
-    public UserController(UserService userServiceImpl, AuthenticationTrustResolver authenticationTrustResolver) {
+    public UserController(UserService userServiceImpl){
         this.userServiceImpl = userServiceImpl;
-        this.authenticationTrustResolver = authenticationTrustResolver;
     }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage() {
-        if (isCurrentAuthenticationAnonymous()) {
-            return "login";
-        } else
-            return null;
-    }
-
-    private boolean isCurrentAuthenticationAnonymous() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authenticationTrustResolver.isAnonymous(authentication);
-    }
-
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getAllUsers(ModelAndView model){

@@ -23,11 +23,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        Query query = entityManager.createQuery("FROM User WHERE login =:userLogin")
-                .setParameter("userLogin", login);
-        return (User) query.getSingleResult();
+        User user = (User) entityManager.createQuery("FROM User WHERE login =:userLogin")
+                .setParameter("userLogin", login)
+                .getSingleResult();
+        return entityManager.find(User.class, user);
     }
-
 
     @SuppressWarnings("unchecked")
     @Transactional

@@ -1,23 +1,24 @@
 package spring.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "public")
 public class User {
 
-
-    @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login", unique = true, updatable = true)
+    @Id
+    @Column(name = "USERNAME", unique = true, updatable = true)
     private String login;
 
 
-    @Column(name = "password", updatable = true)
+    @Column(name = "PASSWORD", updatable = true)
     private String password;
 
     @Column(name = "name",  updatable = true)
@@ -28,6 +29,9 @@ public class User {
 
     @Column(name = "role",  updatable = true)
     private String role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Authorities> authorities = new HashSet<>();
 
     public User() {
     }
@@ -87,6 +91,14 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Set<Authorities> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authorities> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
