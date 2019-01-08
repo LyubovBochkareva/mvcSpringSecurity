@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/")
+@SessionAttributes("roles")
 public class UserController {
 
     private final UserService userServiceImpl;
@@ -38,10 +40,9 @@ public class UserController {
     public String loginPage() {
         if (isCurrentAuthenticationAnonymous()) {
             return "login";
-        }
-        return null;
+        } else
+            return null;
     }
-
 
     private boolean isCurrentAuthenticationAnonymous() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -110,6 +111,11 @@ public class UserController {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    @ModelAttribute("roles")
+    public List<User> initializeProfiles() {
+        return userServiceImpl.getAllUser();
     }
 
 }
