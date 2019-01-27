@@ -1,5 +1,6 @@
-package spring.dao;
+package spring.dao.impl;
 
+import spring.dao.abstr.UserDao;
 import spring.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,8 +10,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
+@Transactional
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 
     @PersistenceContext
     EntityManager entityManager;
@@ -23,10 +25,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        User user = (User) entityManager.createQuery("FROM User WHERE login =:userLogin")
-                .setParameter("userLogin", login)
-                .getSingleResult();
-        return entityManager.find(User.class, user);
+        return (User) getSession().createQuery("FROM User WHERE username =:username").setParameter("username", login).uniqueResult();
     }
 
     @SuppressWarnings("unchecked")

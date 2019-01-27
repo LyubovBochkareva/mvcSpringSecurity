@@ -1,32 +1,23 @@
-<!DOCTYPE html>
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Login page</title>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
+    <link th:replace="fragments :: link_css"></link>
 </head>
+<body onload='document.loginForm.username.focus();'>
+<h1 align="center" class="login-h1">Login page</h1>
 
-<h4>Login Form</h4>
-
-<form action='<spring:url value="/loginAction"/>' method="post">
-    <table>
-        <tr>
-            <td>Login</td>
-            <td><input type="text" name="login"></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><input type="password" name="password"></td>
-        </tr>
-        <tr>
-            <td><button type="submit">Login</button></td>
-        </tr>
-    </table>
-</form>
-<br/>
+<div class="container">
+    <form class="form-signin" name='loginForm' action="" method='POST'>
+        <input class="form-control" placeholder="login" type="text" name="username"/>
+        <input class="form-control" placeholder="password" type="password" name="password"/>
+        <div class="${not empty error}?('error') bg-danger" th:text="${error}"></div>
+        <div class="${not empty msg}?('msg') bg-danger" th:text="${msg}"></div>
+        <br/>
+        <input class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="Login"/>
+        <a class="btn btn-lg btn-primary btn-block" href="/registration">Registration</a>
+    </form>
+</div>
 </body>
+
 </html>

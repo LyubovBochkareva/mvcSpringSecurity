@@ -1,24 +1,38 @@
 package spring.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
-import java.util.HashSet;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "public")
-public class User {
-
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User implements UserDetails {
 
     @Id
-    @Column(name = "USERNAME", unique = true, updatable = true)
-    private String login;
+    @TableGenerator(name = "user_gen",
+            table = "sequences",
+            pkColumnName = "name",
+            valueColumnName = "number",
+            pkColumnValue = "users",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "user_gen")
+    @Column(name = "id")
+    private Long id;
 
 
-    @Column(name = "PASSWORD", updatable = true)
+    @Column(name = "username", unique = true, updatable = true)
+    private String username;
+
+
+    @NotNull
+    @Size(min = 4, max = 100)
+    @Column(name = "password", length = 100, nullable = false)
     private String password;
 
     @Column(name = "name",  updatable = true)
@@ -27,22 +41,27 @@ public class User {
     @Column(name = "age",  updatable = true)
     private int age;
 
-    @Column(name = "role",  updatable = true)
-    private String role;
+    @NotNull
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @JoinTable(name = "permissions",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Authorities> authorities = new HashSet<>();
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
 
     public User() {
     }
 
-    public User(Long id, String login, String password, String name, int age, String role){
-        this.id = id;
-        this.login = login;
+    public User(String username, String password, String name, int age, Set<Role> roles) {
+        this.username = username;
         this.password = password;
         this.name = name;
         this.age = age;
-        this.role = role;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -53,16 +72,38 @@ public class User {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public void setUsername(String login) {
+        this.username = login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
+    @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -85,27 +126,19 @@ public class User {
         this.age = age;
     }
 
-    public String getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Set<Authorities> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authorities> authorities) {
-        this.authorities = authorities;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +

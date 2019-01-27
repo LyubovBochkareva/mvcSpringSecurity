@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+
+    <th:block class="link_css" th:fragment="link_css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+              integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+              crossorigin="anonymous"/>
+    </th:block>
+
+</head>
+<body>
+
+<th:block th:fragment="header-panel">
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+        <div class="container">
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li sec:authorize="hasAuthority('ADMIN')">
+                        <a href="/admin/users" text="Users">Users</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/login?logout" text="Sing Out">Sing Out</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+
+<div class="container-fluid">
+    <div class="row">
+        <h2 align="center" th:text="${hello}">Hello *name</h2>
+    </div>
+</div>
+
+</body>
+</html>

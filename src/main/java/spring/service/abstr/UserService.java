@@ -1,8 +1,10 @@
-package spring.service;
+package spring.service.abstr;
 
+import spring.model.Role;
 import spring.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService{
     void addUser(User user);

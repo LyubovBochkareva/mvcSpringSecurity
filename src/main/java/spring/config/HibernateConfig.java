@@ -9,8 +9,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import spring.model.Authorities;
 import spring.model.User;
+import spring.util.initializer.TestDataInitializer;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -18,7 +18,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:/application.properties"})
-@ComponentScan({"spring.config"})
+@ComponentScan({"spring"})
 public class HibernateConfig {
 
     @Value("${jdbc.driverClassName}")
@@ -47,7 +47,7 @@ public class HibernateConfig {
         LocalSessionFactoryBean asfb = new LocalSessionFactoryBean();
         asfb.setDataSource(dataSource());
         asfb.setHibernateProperties(getHibernateProperties());
-        asfb.setAnnotatedClasses(User.class, Authorities.class);
+        asfb.setAnnotatedClasses(User.class);
         asfb.setPackagesToScan("spring");
         return asfb;
     }
@@ -79,6 +79,11 @@ public class HibernateConfig {
         properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
 
         return properties;
+    }
+
+    @Bean(initMethod = "init")
+    public TestDataInitializer initTestData() {
+        return new TestDataInitializer();
     }
 }
 

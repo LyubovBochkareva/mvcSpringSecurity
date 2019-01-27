@@ -1,10 +1,10 @@
-package spring.dao;
+package spring.dao.abstr;
 
 import spring.model.User;
 
 import java.util.List;
 
-public interface UserDao {
+public interface UserDao extends GenericDao<Long, User>{
     User getUserById(Long id);
     User getUserByLogin(String login);
     List<User> getAllUser();

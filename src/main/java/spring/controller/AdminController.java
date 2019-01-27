@@ -3,7 +3,7 @@ package spring.controller;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.GetMapping;
 import spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,29 +11,30 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import spring.service.UserService;
+import spring.service.abstr.UserService;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
-
+@RequestMapping(value = "/admin")
 @Controller
-@RequestMapping("/")
-@SessionAttributes("roles")
-public class UserController {
+public class AdminController {
 
     private final UserService userServiceImpl;
 
     @Autowired
-    public UserController(UserService userServiceImpl){
+    public AdminController(UserService userServiceImpl){
         this.userServiceImpl = userServiceImpl;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView getAllUsers(ModelAndView model){
-        List<User> userList = userServiceImpl.getAllUser();
-        model.addObject("listUsers", userList);
-        model.setViewName("admin");
-        return model;
+    @GetMapping()
+    public ModelAndView getAdminIndexPage() {
+        return new ModelAndView("admin");
+    }
+
+    @GetMapping(value = "/users")
+    public ModelAndView getAllUsers() {
+        ModelAndView modelAndView = new ModelAndView("allUsers");
+        modelAndView.addObject("listUsers", userServiceImpl.getAllUser());
+        return modelAndView;
     }
 
 
@@ -90,10 +91,4 @@ public class UserController {
         }
         return userName;
     }
-
-    @ModelAttribute("roles")
-    public List<User> initializeProfiles() {
-        return userServiceImpl.getAllUser();
-    }
-
 }

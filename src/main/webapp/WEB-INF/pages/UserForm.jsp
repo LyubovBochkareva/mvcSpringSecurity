@@ -6,7 +6,7 @@
             <form:hidden path="id"/>
             <tr>
                 <td>Login:</td>
-                <td><form:input type ="text" path="login" /></td>
+                <td><form:input type ="text" path="username" /></td>
             </tr>
             <tr>
                 <td>Password:</td>
@@ -22,7 +22,7 @@
             </tr>
             <td>Role</td>
             <td>
-                <p><select size="1" name="role">
+                <p><select size="1" name="roles">
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                 </select></p>
