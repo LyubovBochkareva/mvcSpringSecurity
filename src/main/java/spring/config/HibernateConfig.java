@@ -1,24 +1,32 @@
 package spring.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import spring.model.User;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import spring.util.initializer.TestDataInitializer;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
+@EnableWebMvc
 @Configuration
+@ComponentScan({"spring"})
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:/application.properties"})
-@ComponentScan({"spring"})
 public class HibernateConfig {
 
     @Value("${jdbc.driverClassName}")
@@ -42,21 +50,28 @@ public class HibernateConfig {
     @Value("${hibernate.hbm2ddl.auto}")
     private String hibernateHbm2ddlAuto;
 
+    @Autowired
+    private Environment environment;
+
     @Bean
-    public LocalSessionFactoryBean getSessionFactory() {
-        LocalSessionFactoryBean asfb = new LocalSessionFactoryBean();
-        asfb.setDataSource(dataSource());
-        asfb.setHibernateProperties(getHibernateProperties());
-        asfb.setAnnotatedClasses(User.class);
-        asfb.setPackagesToScan("spring");
-        return asfb;
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+
+        entityManagerFactory.setDataSource(dataSource);
+        entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        entityManagerFactory.setJpaDialect(new HibernateJpaDialect());
+        entityManagerFactory.setPackagesToScan("spring");
+        entityManagerFactory.setJpaPropertyMap(hibernateJpaProperties());
+
+        return entityManagerFactory;
     }
 
     @Bean
-    public HibernateTransactionManager getTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(getSessionFactory().getObject());
-        return transactionManager;
+    public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
+        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+        jpaTransactionManager.setEntityManagerFactory(emf);
+
+        return jpaTransactionManager;
     }
 
     @Bean
@@ -70,10 +85,9 @@ public class HibernateConfig {
         return dataSource;
     }
 
-    @Bean
-    public Properties getHibernateProperties()
-    {
-        Properties properties = new Properties();
+
+    private Map<String, ?> hibernateJpaProperties() {
+        Map<String, String> properties = new HashMap<>();
         properties.put("hibernate.dialect", hibernateDialect);
         properties.put("hibernate.show_sql", hibernateShowSql);
         properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:replace="fragments :: link_css"></link>
+</head>
+<body>
+<th:block th:replace="fragments :: header-panel"></th:block>
+
+<div class="container-fluid">
+    <div class="row">
+        <h2 align="center">Admin page</h2>
+        <div class="panel-heading"><span class="lead">List of Users </span></div>
+        <table class="table table-striped">
+            <tr>
+                <td><b>Login</b></td>
+                <td><b>Password</b></td>
+                <td><b>Name</b></td>
+                <td><b>Age</b></td>
+                <td><b>Role</b></td>
+            </tr>
+                <tr th:each="user : ${listUsers}">
+                    <td th:text="${user.username}">Login</td>
+                    <td th:text="${user.password}">Password</td>
+                    <td th:text="${user.name}">Name</td>
+                    <td th:text="${user.age}">Age</td>
+                    <td th:text="${user.roles}">Role</td>
+                </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
+

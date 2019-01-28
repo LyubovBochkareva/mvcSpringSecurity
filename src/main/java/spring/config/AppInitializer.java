@@ -8,12 +8,12 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { HibernateConfig.class, SecurityConfig.class };
+        return new Class[] { HibernateConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { WebMvcConfig.class, ThymeleafConfig.class};
+        return new Class[] { ThymeleafConfig.class};
     }
 
     @Override
