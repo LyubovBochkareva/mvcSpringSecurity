@@ -1,0 +1,43 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <link th:replace="fragments :: link_css"></link>
+    <title>Registration page</title>
+</head>
+<body>
+<div class="container">
+    <form class="form-signin" th:method="POST" th:object="${user}">
+        <h1>Registration</h1>
+        <input placeholder="login" maxlength="50" required="required" class="form-control" type="text"
+               th:field="*{username}"/>
+        <div class="bg-danger" th:text="${errorUsername}">Username Error</div>
+
+        <input placeholder="password" required="required" minlength="4" maxlength="30"
+               class="form-control" type="password" th:field="*{password}"/>
+        <div class="bg-danger" th:text="${errorPassword}">Password Error</div>
+
+        <input placeholder="confirm password" required="required" class="form-control" type="password"
+               name="confirmPassword" minlength="4" maxlength="30"/>
+        <div class="bg-danger" th:if="${errorConfirm != null}" style="font-size: 13px">
+            <h3 th:text="${errorConfirm}"></h3>
+        </div>
+
+        <input type="hidden" th:field="*{roles}" th:value="${user.roles}"/>
+
+        <input placeholder="name" required="required" class="form-control" type="text"
+               th:field="*{name}"/>
+
+        <input placeholder="age" required="required" class="form-control" type="number"
+               th:field="*{age}"/>
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" name="add" value="Registration"/>
+    </form>
+    <a href="" th:href="@{/login}">
+        <button type="button" class="btn btn-lg btn-primary btn-block" value="Login">Login</button>
+    </a>
+    <div th:if="${congratulations != null}" style="font-size: 13px">
+        <h3 th:text="${congratulations}" style="font-size: 18px; color: forestgreen"></h3>
+    </div>
+</div>
+</body>
+</html>

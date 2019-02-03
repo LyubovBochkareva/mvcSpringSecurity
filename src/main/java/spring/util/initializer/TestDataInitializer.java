@@ -32,7 +32,7 @@ public class TestDataInitializer {
         Set<Role> roleListAdmin = new HashSet();
         roleListAdmin.add(roleUser);
         roleListAdmin.add(roleAdmin);
-        User admin = new User("one", "$2a$10$9slUP4kCAekEy.AWmcDyL.jlOBG3aVXchlg0h4wtSXwZn9oW9FLrm", "one", 1, roleListAdmin);
+        User admin = new User("one", "one", "one", 1, roleListAdmin);
 
 //		<---Adding users into a DB--->
         userService.addUser(admin);
