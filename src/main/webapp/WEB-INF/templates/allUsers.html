@@ -26,8 +26,21 @@
                     <td th:text="${user.name}">Name</td>
                     <td th:text="${user.age}">Age</td>
                     <td th:text="${user.roles}">Role</td>
+                    <td>
+                        <a href="" th:href="@{/admin/users/__${user.id}__/update}">
+                            <button type="button" class="btn btn-info btn-success">Update</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="" th:href="@{/admin/users/__${user.id}__/delete}">
+                            <button type="button" class="btn btn-danger btn-success">Delete</button>
+                        </a>
+                    </td>
                 </tr>
         </table>
+        <a href="" th:href="@{/admin/users/add}">
+            <button type="button" class="btn btn-lg btn-success">Add</button>
+        </a>
     </div>
 </div>
 </body>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update product</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:replace="fragments :: link_css"></link>
+</head>
+<body>
+<th:block th:replace="fragments :: header-panel"></th:block>
+<div class="container">
+    <div class="row">
+        <h1 class="page-header">Update product</h1>
+        <div class="table-responsive">
+            <form th:action="@{/admin/users/__${user.id}__/update}" th:method="post" th:object="${user}">
+                <table class="table table-striped">
+                    <tr>
+                        <td>Login</td>
+                        <td><input type="text" th:field="*{username}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="text" th:field="*{password}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td><input type="text" th:field="*{name}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Age</td>
+                        <td><input type="number" th:field="*{age}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Role</td>
+                        <td><input type="text" th:field="*{roles}"/></td>
+                    </tr>
+                </table>
+                <button type="submit" class="btn btn-lg btn-success">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
