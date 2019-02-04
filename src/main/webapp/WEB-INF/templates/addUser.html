@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add product</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:replace="fragments :: link_css"></link>
+</head>
+<body>
+
+<th:block th:replace="fragments :: header-panel"></th:block>
+
+<div class="container">
+    <div class="row">
+        <h1 class="page-header">Add user</h1>
+        <div class="table-responsive">
+            <form th:action="@{/admin/users/add}" th:method="post" th:object="${user}">
+                <div class="container">
+                        <input placeholder="login" maxlength="50" required="required" class="form-control" type="text"
+                               th:field="*{username}"/>
+
+                        <input placeholder="password" required="required" minlength="4" maxlength="30"
+                               class="form-control" type="password" th:field="*{password}"/>
+
+                        <input placeholder="confirm password" required="required" class="form-control" type="password"
+                               name="confirmPassword" minlength="4" maxlength="30"/>
+
+                        <input placeholder="name" required="required" class="form-control" type="text"
+                               th:field="*{name}"/>
+
+                        <input placeholder="age" required="required" class="form-control" type="number"
+                               th:field="*{age}"/>
+                    <select size="1" name="role">
+                        <option value="USER">USER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+
+                <button type="submit" class="btn btn-lg btn-success">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

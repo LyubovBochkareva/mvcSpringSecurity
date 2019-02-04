@@ -51,13 +51,24 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
-    public ModelAndView deleteUser(HttpServletRequest request) {
-        Long userId = Long.valueOf(request.getParameter("id"));
-        userServiceImpl.deleteUser(userId);
-        return new ModelAndView("redirect:/admin");
+    @GetMapping(value = "/users/{id}/delete")
+    public String deleteUserGet(@PathVariable("id") Long id) {
+        userServiceImpl.deleteUser(id);
+        return "redirect:/admin/users";
     }
 
+    @GetMapping(value = "/users/add")
+    public ModelAndView addUserGet() {
+        ModelAndView modelAndView = new ModelAndView("addUser");
+        modelAndView.addObject("user", new User());
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/users/add")
+    public String addUserPost(User user) {
+        userServiceImpl.addUser(user);
+        return "redirect:/admin/users";
+    }
 
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
