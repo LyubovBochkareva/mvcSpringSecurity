@@ -31,7 +31,13 @@
                     </tr>
                     <tr>
                         <td>Role</td>
-                        <td><input type="text" th:field="*{roles}"/></td>
+                        <td><select th:field="*{roles}" multiple="">
+                            <th:block th:each="role : ${allRoles}">
+                                <option th:text="${role.name}"/>
+                                <option th:value="${role}"></option>
+                            </th:block>
+                        </select>
+                        </td>
                     </tr>
                 </table>
                 <button type="submit" class="btn btn-lg btn-success">Update</button>

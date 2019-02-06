@@ -1,21 +1,27 @@
 package spring.controller;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import spring.model.Role;
 import spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
+import spring.service.abstr.RoleService;
 import spring.service.abstr.UserService;
-import javax.servlet.http.HttpServletRequest;
+
+import javax.validation.Valid;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 
 @RequestMapping(value = "/admin")
 @Controller
 public class AdminController {
 
+    @Autowired
     private final UserService userServiceImpl;
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     public AdminController(UserService userServiceImpl){
@@ -44,10 +50,19 @@ public class AdminController {
     }
 
     @PostMapping(value = "/users/{id}/update")
-    public String updatePost(@PathVariable("id") Long id, User user) {
+    public ModelAndView updatePost(@PathVariable("id") Long id, @Valid User user) {
         user.setId(id);
+        ModelAndView model = new ModelAndView("updateUser");
+        model.addObject("user", user);
+        model.addObject("allRoles", user.getRoles());
+        Role roleUser = roleService.getRoleByRoleName("USER");
+        Role roleAdmin = roleService.getRoleByRoleName("ADMIN");
+        Set<Role> roles = new LinkedHashSet<>();
+        roles.add(roleUser);
+        roles.add(roleAdmin);
+        user.setRoles(roles);
         userServiceImpl.updateUser(user);
-        return "redirect:/admin/users";
+        return model;
     }
 
 
