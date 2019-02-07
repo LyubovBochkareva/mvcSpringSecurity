@@ -1,5 +1,8 @@
 package spring.controller;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import spring.model.Role;
 import spring.model.User;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import spring.service.abstr.RoleService;
 import spring.service.abstr.UserService;
+import spring.util.validation.PasswordValidator;
 
 import javax.validation.Valid;
 import java.util.LinkedHashSet;
@@ -42,27 +46,26 @@ public class AdminController {
 
 
     @GetMapping(value = "/users/{id}/update")
-    public ModelAndView updateGet(@PathVariable("id") Long id) {
+    public ModelAndView updateUserGet(@PathVariable("id") Long id) {
         User user = userServiceImpl.getUserById(id);
         ModelAndView modelAndView = new ModelAndView("updateUser");
         modelAndView.addObject("user", user);
-        return modelAndView;
-    }
-
-    @PostMapping(value = "/users/{id}/update")
-    public ModelAndView updatePost(@PathVariable("id") Long id, @Valid User user) {
-        user.setId(id);
-        ModelAndView model = new ModelAndView("updateUser");
-        model.addObject("user", user);
-        model.addObject("allRoles", user.getRoles());
         Role roleUser = roleService.getRoleByRoleName("USER");
         Role roleAdmin = roleService.getRoleByRoleName("ADMIN");
         Set<Role> roles = new LinkedHashSet<>();
         roles.add(roleUser);
         roles.add(roleAdmin);
-        user.setRoles(roles);
-        userServiceImpl.updateUser(user);
-        return model;
+        modelAndView.addObject("allRoles", roles);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST)
+    public String  updateUserPost(@PathVariable("id") Long id, @Valid User userFromPage) {
+
+        ModelAndView model = new ModelAndView("updateUser");
+        model.addObject("user", userFromPage);
+        userServiceImpl.updateUser(userFromPage);
+        return "redirect:/admin/users";
     }
 
 
