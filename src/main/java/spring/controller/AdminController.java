@@ -1,8 +1,6 @@
 package spring.controller;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import spring.model.Role;
 import spring.model.User;
@@ -11,9 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import spring.service.abstr.RoleService;
 import spring.service.abstr.UserService;
-import spring.util.validation.PasswordValidator;
 
-import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -52,21 +49,31 @@ public class AdminController {
         modelAndView.addObject("user", user);
         Role roleUser = roleService.getRoleByRoleName("USER");
         Role roleAdmin = roleService.getRoleByRoleName("ADMIN");
-        Set<Role> roles = new LinkedHashSet<>();
+        Set<Role> roles = new HashSet<>();
         roles.add(roleUser);
         roles.add(roleAdmin);
         modelAndView.addObject("allRoles", roles);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST)
-    public String  updateUserPost(@PathVariable("id") Long id, @Valid User userFromPage) {
-
-        ModelAndView model = new ModelAndView("updateUser");
-        model.addObject("user", userFromPage);
-        userServiceImpl.updateUser(userFromPage);
-        return "redirect:/admin/users";
-    }
+        @RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST)
+        public String  updateUserPost(@PathVariable("id") Long id, User userFromPage) {
+            userFromPage.setId(id);
+            Set<Role> rolesUser = userFromPage.getRoles();
+            if(rolesUser.contains("ADMIN")){
+                Role roleAdmin = roleService.getRoleByRoleName("ADMIN");
+                rolesUser.remove("ADMIN");
+                rolesUser.add(roleAdmin);
+            }
+            if(rolesUser.contains("USER")){
+                Role roleUser  = roleService.getRoleByRoleName("USER");
+                rolesUser.remove("USER");
+                rolesUser.add(roleUser);
+            }
+            userFromPage.setRoles(rolesUser);
+            userServiceImpl.updateUser(userFromPage);
+            return "redirect:/admin/users";
+        }
 
 
     @GetMapping(value = "/users/{id}/delete")

@@ -64,4 +64,5 @@ public class RoleServiceImpl implements RoleService {
             logger.error("Failed to deleted an role id=" + id);
         }
     }
+
 }
