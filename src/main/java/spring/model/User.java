@@ -1,18 +1,20 @@
 package spring.model;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "public")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     @TableGenerator(name = "user_gen",
@@ -43,6 +45,7 @@ public class User implements UserDetails {
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade ({org.hibernate.annotations.CascadeType.REFRESH, org.hibernate.annotations.CascadeType.MERGE})
     @JoinTable(name = "permissions",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})

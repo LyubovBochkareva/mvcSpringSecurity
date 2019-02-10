@@ -27,12 +27,12 @@
                     <td th:text="${user.age}">Age</td>
                     <td th:text="${user.roles}">Role</td>
                     <td>
-                        <a href="" th:href="@{/admin/users/__${user.id}__/update}">
+                        <a href="" th:href="@{/admin/users/update/__${user.id}__}">
                             <button type="button" class="btn btn-info btn-success">Update</button>
                         </a>
                     </td>
                     <td>
-                        <a href="" th:href="@{/admin/users/__${user.id}__/delete}">
+                        <a href="" th:href="@{/admin/users/delete/__${user.id}__}">
                             <button type="button" class="btn btn-danger btn-success">Delete</button>
                         </a>
                     </td>

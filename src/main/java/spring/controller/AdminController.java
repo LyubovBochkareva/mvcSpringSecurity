@@ -42,7 +42,7 @@ public class AdminController {
     }
 
 
-    @GetMapping(value = "/users/{id}/update")
+    @GetMapping(value = "/users/update/{id}")
     public ModelAndView updateUserGet(@PathVariable("id") Long id) {
         User user = userServiceImpl.getUserById(id);
         ModelAndView modelAndView = new ModelAndView("updateUser");
@@ -56,27 +56,16 @@ public class AdminController {
         return modelAndView;
     }
 
-        @RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST)
+        @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
         public String  updateUserPost(@PathVariable("id") Long id, User userFromPage) {
             userFromPage.setId(id);
-            Set<Role> rolesUser = userFromPage.getRoles();
-            if(rolesUser.contains("ADMIN")){
-                Role roleAdmin = roleService.getRoleByRoleName("ADMIN");
-                rolesUser.remove("ADMIN");
-                rolesUser.add(roleAdmin);
-            }
-            if(rolesUser.contains("USER")){
-                Role roleUser  = roleService.getRoleByRoleName("USER");
-                rolesUser.remove("USER");
-                rolesUser.add(roleUser);
-            }
-            userFromPage.setRoles(rolesUser);
+            userFromPage.setRoles(userFromPage.getRoles());
             userServiceImpl.updateUser(userFromPage);
             return "redirect:/admin/users";
         }
 
 
-    @GetMapping(value = "/users/{id}/delete")
+    @GetMapping(value = "/users/delete/{id}")
     public String deleteUserGet(@PathVariable("id") Long id) {
         userServiceImpl.deleteUser(id);
         return "redirect:/admin/users";
