@@ -18,7 +18,7 @@ import java.util.Set;
 
 
 @RequestMapping(value = "/admin")
-@RestController
+@Controller
 public class AdminController {
 
     @Autowired
@@ -55,9 +55,9 @@ public class AdminController {
     }
 
         @RequestMapping(value = "/users/update", method = {RequestMethod.POST, RequestMethod.OPTIONS}, headers = "Accept=application/json", produces = {"application/json; charset=UTF-8"})
-        public String  updateUserPost(@ModelAttribute(value="user") User userFromPage) {
-            System.out.println(userFromPage);
-            userServiceImpl.updateUser(userFromPage);
+        public String  updateUserPost(@ModelAttribute User user) {
+            System.out.println(user);
+            userServiceImpl.updateUser(user);
             return "redirect:/admin/users";
         }
 

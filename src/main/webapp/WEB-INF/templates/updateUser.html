@@ -35,7 +35,9 @@
                         <td>Role</td>
                         <td><select th:field="*{roles}" multiple="">
                             <th:block th:each="role : ${allRoles}">
-                                <option th:text="${role.authority}" th:value="${role.authority}"></option>
+                                <option name="role" th:text="${role.authority}" >
+                                <input type="hidden" name="id" th:value="${role.id}"/>
+                                <input type="hidden" name="name" th:value="${role.authority}"/></option>
                             </th:block>
                         </select>
                         </td>
