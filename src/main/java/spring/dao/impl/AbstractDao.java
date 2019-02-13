@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 public abstract class AbstractDao<PK extends Serializable, T> {

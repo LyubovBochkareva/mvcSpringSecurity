@@ -2,16 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Update product</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link th:replace="fragments :: link_css"></link>
+    <meta http-equiv="Content-Type" content="application/json; charset=UTF-8"/>
+    <link th:replace="fragments :: link_css"/>
 </head>
 <body>
-<th:block th:replace="fragments :: header-panel"></th:block>
+<th:block></th:block>
 <div class="container">
     <div class="row">
         <h1 class="page-header">Update product</h1>
         <div class="table-responsive">
-            <form th:action="@{/admin/users/update/__${user.id}__}" th:method="post" th:object="${user}">
+            <form th:action="@{/admin/users/update}" th:method="POST" th:object="${user}" content="application/json;charset=UTF-8">
+                <input type="text" th:field="*{id}" />
+                <input type="text" th:field="*{roles}" />
                 <table class="table table-striped">
                     <tr>
                         <td>Login</td>
@@ -33,7 +35,7 @@
                         <td>Role</td>
                         <td><select th:field="*{roles}" multiple="">
                             <th:block th:each="role : ${allRoles}">
-                                <option th:text="${role.authority}" th:value="${role.authority}" ></option>
+                                <option th:text="${role.authority}" th:value="${role.authority}"></option>
                             </th:block>
                         </select>
                         </td>

@@ -1,6 +1,5 @@
 package spring.model;
 
-import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,7 +26,6 @@ public class User implements UserDetails, Serializable {
     @Column(name = "id")
     private Long id;
 
-
     @Column(name = "username", unique = true, updatable = true)
     private String username;
 
@@ -45,7 +43,6 @@ public class User implements UserDetails, Serializable {
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
-    @Cascade ({org.hibernate.annotations.CascadeType.REFRESH, org.hibernate.annotations.CascadeType.MERGE})
     @JoinTable(name = "permissions",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
@@ -138,6 +135,24 @@ public class User implements UserDetails, Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, name, age, roles);
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
@@ -145,22 +160,8 @@ public class User implements UserDetails, Serializable {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", roles=" + roles +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id.equals(user.id) &&
-                age == user.age &&
-                Objects.equals(name, user.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, age);
     }
 }
 

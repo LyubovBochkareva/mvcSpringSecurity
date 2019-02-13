@@ -1,5 +1,6 @@
 package spring.controller;
 
+import com.google.gson.Gson;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import spring.model.Role;
@@ -12,11 +13,12 @@ import spring.service.abstr.UserService;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 
 @RequestMapping(value = "/admin")
-@Controller
+@RestController
 public class AdminController {
 
     @Autowired
@@ -44,22 +46,17 @@ public class AdminController {
 
     @GetMapping(value = "/users/update/{id}")
     public ModelAndView updateUserGet(@PathVariable("id") Long id) {
-        User user = userServiceImpl.getUserById(id);
         ModelAndView modelAndView = new ModelAndView("updateUser");
-        modelAndView.addObject("user", user);
-        Role roleUser = roleService.getRoleByRoleName("USER");
-        Role roleAdmin = roleService.getRoleByRoleName("ADMIN");
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleUser);
-        roles.add(roleAdmin);
-        modelAndView.addObject("allRoles", roles);
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(userServiceImpl.getUserById(id)));
+        modelAndView.addObject("user", userServiceImpl.getUserById(id));
+        modelAndView.addObject("allRoles", roleService.getAllRoles());
         return modelAndView;
     }
 
-        @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
-        public String  updateUserPost(@PathVariable("id") Long id, User userFromPage) {
-            userFromPage.setId(id);
-            userFromPage.setRoles(userFromPage.getRoles());
+        @RequestMapping(value = "/users/update", method = {RequestMethod.POST, RequestMethod.OPTIONS}, headers = "Accept=application/json", produces = {"application/json; charset=UTF-8"})
+        public String  updateUserPost(@ModelAttribute(value="user") User userFromPage) {
+            System.out.println(userFromPage);
             userServiceImpl.updateUser(userFromPage);
             return "redirect:/admin/users";
         }
