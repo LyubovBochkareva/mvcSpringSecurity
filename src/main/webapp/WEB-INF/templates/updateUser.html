@@ -12,8 +12,8 @@
         <h1 class="page-header">Update product</h1>
         <div class="table-responsive">
             <form th:action="@{/admin/users/update}" th:method="POST" th:object="${user}" content="application/json;charset=UTF-8">
-                <input type="text" th:field="*{id}" />
-                <input type="text" th:field="*{roles}" />
+                <input type="hidden"  th:field="*{id}" />
+                <input type="hidden"  th:field="*{roles}" />
                 <table class="table table-striped">
                     <tr>
                         <td>Login</td>
