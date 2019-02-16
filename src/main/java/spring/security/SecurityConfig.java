@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setForceEncoding(true);
         http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
         http.authorizeRequests()
-                .antMatchers("/user/**").hasAnyAuthority("USER")
+                .antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
                 .and()
                 .formLogin()

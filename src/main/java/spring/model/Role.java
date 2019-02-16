@@ -3,6 +3,7 @@ package spring.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -26,8 +27,18 @@ public class Role implements GrantedAuthority {
     public Role() {
     }
 
+    public Role(String name, Long id) {
+        this.name = name;
+        this.id = id;
+    }
+
     public Role(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 
     public Long getId() {
@@ -38,23 +49,26 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getAuthority() {
+    public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Role role = (Role) o;
-
-        return name != null ? name.equals(role.name) : role.name == null;
+        return Objects.equals(id, role.id) &&
+                Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return Objects.hash(id, name);
     }
 
     @Override
@@ -63,13 +77,5 @@ public class Role implements GrantedAuthority {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

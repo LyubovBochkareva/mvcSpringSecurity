@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.dao.abstr.RoleDao;
 import spring.model.Role;
 
+import java.util.Set;
+
 @Transactional
 @Repository
 public class RoleDaoImpl extends AbstractDao<Long, Role> implements RoleDao {

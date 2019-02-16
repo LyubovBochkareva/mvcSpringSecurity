@@ -1,6 +1,7 @@
 package spring.security;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -9,6 +10,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 import spring.model.Role;
+import spring.service.abstr.RoleService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,11 @@ import java.util.Collection;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final static Logger logger = Logger.getLogger(CustomAuthenticationSuccessHandler.class);
+
+    @Autowired
+    private RoleService roleService;
+    private Role roleAdmin;
+    private Role roleUser;
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -51,12 +58,26 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private String determineTargetUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        if (authorities.contains(new Role("ADMIN"))) {
+        if (authorities.contains(getAdminRole())) {
             return "/admin";
-        } else if (authorities.contains(new Role("USER"))) {
+        } else if (authorities.contains(getUserRole())) {
             return "/user";
         } else {
             throw new IllegalStateException();
         }
+    }
+
+    private Role getAdminRole() {
+        if (roleAdmin == null) {
+            roleAdmin = roleService.getRoleByRoleName("ADMIN");
+        }
+        return roleAdmin;
+    }
+
+    private Role getUserRole() {
+        if (roleUser == null) {
+            roleUser = roleService.getRoleByRoleName("USER");
+        }
+        return roleUser;
     }
 }

@@ -44,7 +44,6 @@ public class User implements UserDetails, Serializable {
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
-    @Cascade({org.hibernate.annotations.CascadeType.REFRESH})
     @JoinTable(name = "permissions",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
