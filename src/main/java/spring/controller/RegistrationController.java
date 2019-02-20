@@ -64,7 +64,7 @@ public class RegistrationController {
             return model;
         } else {
             Role role = roleService.getRoleByRoleName("USER");
-            Set<Role> roles = new LinkedHashSet<>();
+            List<Role> roles = new ArrayList<>();
             roles.add(role);
             userFromPage.setRoles(roles);
             userService.addUser(userFromPage);

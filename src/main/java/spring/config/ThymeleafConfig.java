@@ -2,9 +2,7 @@ package spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-import org.thymeleaf.extras.tiles2.dialect.TilesDialect;
+import org.springframework.format.FormatterRegistry;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
@@ -12,6 +10,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
 public class ThymeleafConfig {
+
+    private static final String ENCODING = "UTF-8";
 
     @Bean
     public ITemplateResolver templateResolver() {
@@ -25,20 +25,19 @@ public class ThymeleafConfig {
 
     @Bean
     public SpringTemplateEngine templateEngine() {
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.addTemplateResolver(templateResolver());
-        templateEngine.addDialect(new TilesDialect());
-        templateEngine.addDialect(new SpringSecurityDialect());
-        templateEngine.addDialect(new Java8TimeDialect());
-        return templateEngine;
+        SpringTemplateEngine engine = new SpringTemplateEngine();
+        engine.setTemplateResolver(templateResolver());
+        return engine;
     }
+
+
 
     @Bean
     public ThymeleafViewResolver thymeleafViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setContentType("text/html; charset=UTF-8");
+        resolver.setCharacterEncoding(ENCODING);
         resolver.setTemplateEngine(templateEngine());
         return resolver;
     }
+
 }

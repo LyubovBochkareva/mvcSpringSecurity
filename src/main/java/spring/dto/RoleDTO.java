@@ -1,17 +1,23 @@
 package spring.dto;
 
+
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class RoleDTO {
 
-    private  Long id;
+public class RoleDTO implements Serializable {
+
+    private static final long serialVersionUID = -7168718084438918126L;
+    private String id;
     private String name;
 
-    public Long getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

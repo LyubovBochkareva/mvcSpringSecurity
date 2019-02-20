@@ -7,6 +7,8 @@ import spring.service.abstr.UserService;
 import spring.service.abstr.RoleService;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class TestDataInitializer {
@@ -31,7 +33,7 @@ public class TestDataInitializer {
         roleService.addRole(roleUser);
 
 //		<---Creating users--->
-        Set<Role> roleListAdmin = new HashSet();
+        List<Role> roleListAdmin = new LinkedList<>();
         roleListAdmin.add(roleUser);
         roleListAdmin.add(roleAdmin);
         User admin = new User();

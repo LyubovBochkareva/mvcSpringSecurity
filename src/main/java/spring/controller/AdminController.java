@@ -3,6 +3,9 @@ package spring.controller;
 import com.google.gson.Gson;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import spring.converter.RoleConverterService;
+import spring.converter.UserConverterService;
+import spring.dto.UserDTO;
 import spring.model.Role;
 import spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,11 @@ public class AdminController {
     private final UserService userServiceImpl;
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private UserConverterService userConverterService;
+    @Autowired
+    private RoleConverterService roleConverterService;
 
     @Autowired
     public AdminController(UserService userServiceImpl){
@@ -43,17 +51,16 @@ public class AdminController {
     @GetMapping(value = "/users/update/{id}")
     public ModelAndView updateUserGet(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("updateUser");
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(userServiceImpl.getUserById(id)));
-        modelAndView.addObject("user", userServiceImpl.getUserById(id));
-        modelAndView.addObject("allRoles", roleService.getAllRoles());
+        UserDTO dto = userConverterService.getUserByEntity(userServiceImpl.getUserById(id));
+        modelAndView.addObject("userDTO", dto);
+        modelAndView.addObject("allRoles", roleConverterService.getRoleByEntity(roleService.getAllRoles()));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/users/update", method = {RequestMethod.POST, RequestMethod.OPTIONS}, headers = "Accept=application/json", produces = {"application/json; charset=UTF-8"})
-    public String  updateUserPost(@ModelAttribute User user) {
-        checkRoles(user);
-        userServiceImpl.updateUser(user);
+    @RequestMapping(value = "/users/update", method = RequestMethod.POST)
+    public String  updateUserPost(UserDTO userDTO) {
+      //  checkRoles(userDTO);
+       userServiceImpl.updateUser(userConverterService.getUserByUserDTO(userDTO));
         return "redirect:/admin/users";
     }
 

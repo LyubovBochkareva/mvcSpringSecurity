@@ -1,16 +1,18 @@
 package spring.dto;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private Long id;
     private String username;
     private String password;
     private String name;
     private int age;
-    private Set<RoleDTO> roles;
+    private List<RoleDTO> roles;
 
     public Long getId() {
         return id;
@@ -52,11 +54,11 @@ public class UserDTO {
         this.age = age;
     }
 
-    public Set<RoleDTO> getRoles() {
+    public List<RoleDTO> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<RoleDTO> roles) {
+    public void setRoles(List<RoleDTO> roles) {
         this.roles = roles;
     }
 

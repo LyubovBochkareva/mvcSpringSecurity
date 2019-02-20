@@ -10,9 +10,9 @@
     <div class="row">
         <h1 class="page-header">Update product</h1>
         <div class="table-responsive">
-            <form th:action="@{/admin/users/update}" th:method="POST" th:object="${user}" content="application/json;charset=UTF-8">
-                <input type="hidden"  th:field="*{id}" />
+            <form th:object="${userDTO}" th:action="@{/admin/users/update}" method="post" >
                 <table class="table table-striped">
+                    <input type="hidden" th:field="*{id}" />
                     <tr>
                         <td>Login</td>
                         <td><input type="text" th:field="*{username}"/></td>
@@ -32,16 +32,18 @@
                     <tr>
                         <td>Role</td>
                         <td>
-                            <select th:field="*{roles}" multiple="" >
-                                <th:block th:each="role : ${allRoles}">
-                                <option th:text="${role.name}" th:value="${role.name}">
-                                </option>
-                                </th:block>
-                            </select>
+                            <label>
+                                <select th:field="*{roles}" multiple="multiple">
+                                    <option th:each="role : ${allRoles}"
+                                            th:value="${{role}}"
+                                            th:text="${role.name}">
+                                    </option>
+                                </select>
+                            </label>
                         </td>
                     </tr>
                 </table>
-                <button type="submit" class="btn btn-lg btn-success">Update</button>
+                <input type="submit" />
             </form>
         </div>
     </div>
