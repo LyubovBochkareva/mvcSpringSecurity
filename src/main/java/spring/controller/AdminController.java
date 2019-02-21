@@ -28,11 +28,6 @@ public class AdminController {
     private RoleService roleService;
 
     @Autowired
-    private UserConverterService userConverterService;
-    @Autowired
-    private RoleConverterService roleConverterService;
-
-    @Autowired
     public AdminController(UserService userServiceImpl){
         this.userServiceImpl = userServiceImpl;
     }
