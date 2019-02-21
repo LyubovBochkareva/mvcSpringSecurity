@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.converter.RoleConverterService;
 import spring.converter.UserConverterService;
+import spring.dto.RoleDTO;
 import spring.dto.UserDTO;
 import spring.model.Role;
 import spring.model.User;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import spring.service.abstr.RoleService;
 import spring.service.abstr.UserService;
+
+import java.util.List;
 
 
 @RequestMapping(value = "/admin")
@@ -51,16 +54,17 @@ public class AdminController {
     @GetMapping(value = "/users/update/{id}")
     public ModelAndView updateUserGet(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("updateUser");
-        UserDTO dto = userConverterService.getUserByEntity(userServiceImpl.getUserById(id));
-        modelAndView.addObject("userDTO", dto);
-        modelAndView.addObject("allRoles", roleConverterService.getRoleByEntity(roleService.getAllRoles()));
+        UserDTO userDTO = userServiceImpl.getUserById(id);
+        List<RoleDTO> roleDTO = roleService.getAllRoles();
+        modelAndView.addObject("userDTO", userDTO);
+        modelAndView.addObject("allRoles", roleDTO);
         return modelAndView;
     }
 
     @RequestMapping(value = "/users/update", method = RequestMethod.POST)
     public String  updateUserPost(UserDTO userDTO) {
       //  checkRoles(userDTO);
-       userServiceImpl.updateUser(userConverterService.getUserByUserDTO(userDTO));
+       userServiceImpl.updateUser(userDTO);
         return "redirect:/admin/users";
     }
 

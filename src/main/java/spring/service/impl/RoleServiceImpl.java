@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import spring.converter.RoleConverterService;
 import spring.dao.abstr.RoleDao;
+import spring.dto.RoleDTO;
 import spring.model.Role;
 import spring.service.abstr.RoleService;
 import spring.service.exceptions.NotFoundException;
@@ -19,6 +21,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private RoleConverterService roleConverterService;
 
     public void addRole(Role role) {
         try {
@@ -43,8 +48,8 @@ public class RoleServiceImpl implements RoleService {
         return roleDao.getEntityByKey(id);
     }
 
-    public List<Role> getAllRoles() {
-        return roleDao.getAllEntity();
+    public List<RoleDTO> getAllRoles() {
+        return roleConverterService.getRoleByEntity(roleDao.getAllEntity());
     }
 
     public void updateRoles(Role role) {

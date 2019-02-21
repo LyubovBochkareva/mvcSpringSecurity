@@ -1,6 +1,9 @@
 package spring.service.impl;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import spring.converter.UserConverterService;
 import spring.dao.abstr.UserDao;
+import spring.dto.UserDTO;
 import spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +19,17 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     @Autowired
+    private UserConverterService userConverterService;
+
+    @Autowired
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
 
     @Override
-    public User getUserById(Long id) {
-        return userDao.getUserById(id);
+    public UserDTO getUserById(Long id) {
+        return userConverterService.getUserByEntity(userDao.getUserById(id));
     }
 
     @Override
@@ -34,8 +40,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+    public void updateUser(UserDTO user) {
+
+        userDao.updateUser(userConverterService.getUserByUserDTO(user));
     }
 
 

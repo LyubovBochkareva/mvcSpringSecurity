@@ -1,5 +1,6 @@
 package spring.service.abstr;
 
+import spring.dto.UserDTO;
 import spring.model.Role;
 import spring.model.User;
 
@@ -10,8 +11,8 @@ public interface UserService{
     void addUser(User user);
     List<User> getAllUser();
     void deleteUser(Long id);
-    User getUserById(Long id);
-    void updateUser(User user);
+    UserDTO getUserById(Long id);
+    void updateUser(UserDTO user);
     public void saveOrUpdate(User user);
     public User getUserByLogin(String login);
 }

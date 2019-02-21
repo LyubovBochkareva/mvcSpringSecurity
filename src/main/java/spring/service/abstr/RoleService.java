@@ -1,5 +1,6 @@
 package spring.service.abstr;
 
+import spring.dto.RoleDTO;
 import spring.model.Role;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface RoleService {
 
     Role getRoleById(Long id);
 
-    List<Role> getAllRoles();
+    List<RoleDTO> getAllRoles();
 
     void updateRoles(Role role);
 
