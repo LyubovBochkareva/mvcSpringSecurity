@@ -1,17 +1,13 @@
 package spring.dto;
 
-
-
 import java.io.Serializable;
 import java.util.Objects;
-
 
 public class RoleDTO implements Serializable {
 
     private static final long serialVersionUID = -7168718084438918126L;
     private String id;
     private String name;
-
 
     public String getId() {
         return id;
@@ -31,10 +27,7 @@ public class RoleDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "RoleDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "{\"id\":\"" + id + "\",\"name\":\"" + name + "\"}";
     }
 
     @Override

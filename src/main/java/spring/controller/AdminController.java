@@ -28,7 +28,7 @@ public class AdminController {
     private RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userServiceImpl){
+    public AdminController(UserService userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
     }
 
@@ -49,17 +49,14 @@ public class AdminController {
     @GetMapping(value = "/users/update/{id}")
     public ModelAndView updateUserGet(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("updateUser");
-        UserDTO userDTO = userServiceImpl.getUserById(id);
-        List<RoleDTO> roleDTO = roleService.getAllRoles();
-        modelAndView.addObject("userDTO", userDTO);
-        modelAndView.addObject("allRoles", roleDTO);
+        modelAndView.addObject("userDTO", userServiceImpl.getUserById(id));
+        modelAndView.addObject("allRoles", roleService.getAllRoles());
         return modelAndView;
     }
 
     @RequestMapping(value = "/users/update", method = RequestMethod.POST)
-    public String  updateUserPost(UserDTO userDTO) {
-      //  checkRoles(userDTO);
-       userServiceImpl.updateUser(userDTO);
+    public String updateUserPost(UserDTO userDTO) {
+        userServiceImpl.updateUser(userDTO);
         return "redirect:/admin/users";
     }
 
@@ -88,18 +85,18 @@ public class AdminController {
 
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-        public ModelAndView user(ModelAndView modelAndView){
+    public ModelAndView user(ModelAndView modelAndView) {
         modelAndView.setViewName("user");
         return modelAndView;
     }
 
-    private void checkRoles(User user){
-        if (user.getRoles().contains(new Role("ADMIN"))){
+    private void checkRoles(User user) {
+        if (user.getRoles().contains(new Role("ADMIN"))) {
             Role adminRole = roleService.getRoleByRoleName("ADMIN");
             user.getRoles().remove(new Role("ADMIN", null));
             user.getRoles().add(adminRole);
         }
-        if (user.getRoles().contains((new Role("USER")))){
+        if (user.getRoles().contains((new Role("USER")))) {
             Role userRole = roleService.getRoleByRoleName("USER");
             user.getRoles().remove(new Role("USER", null));
             user.getRoles().add(userRole);

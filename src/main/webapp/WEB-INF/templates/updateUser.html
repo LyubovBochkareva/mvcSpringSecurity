@@ -32,14 +32,15 @@
                     <tr>
                         <td>Role</td>
                         <td>
-                            <label>
-                                <select th:field="*{roles}" multiple="multiple">
-                                    <option th:each="role : ${allRoles}"
-                                            th:value="${{role}}"
+                            <select th:field="*{roles}" multiple="multiple">
+                                <th:block th:each="role : ${allRoles}">
+                                    <option th:if="${role!= null}"
+                                            th:value="${role}"
                                             th:text="${role.getName()}">
                                     </option>
-                                </select>
-                            </label>
+                                </th:block>
+
+                            </select>
                         </td>
                     </tr>
                 </table>
