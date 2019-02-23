@@ -15,7 +15,6 @@
         <div class="table-responsive">
             <form th:action="@{/admin/users/add}" th:method="post" th:object="${user}">
                 <div class="container">
-                    <input type="hidden"  th:field="*{id}" />
                         <input placeholder="login" maxlength="50" required="required" class="form-control" type="text"
                                th:field="*{username}"/>
 
@@ -30,9 +29,11 @@
 
                         <input placeholder="age" required="required" class="form-control" type="number"
                                th:field="*{age}"/>
-                    <select th:field="*{roles}" multiple="" >
+                    <select th:field="*{roles}" multiple="multiple">
                         <th:block th:each="role : ${allRoles}">
-                            <option th:text="${role.name}" th:value="${role.name}">
+                            <option th:if="${role!= null}"
+                                    th:value="${role}"
+                                    th:text="${role.getName()}">
                             </option>
                         </th:block>
                     </select>

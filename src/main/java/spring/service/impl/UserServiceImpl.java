@@ -32,10 +32,11 @@ public class UserServiceImpl implements UserService {
         return userConverterService.getUserByEntity(userDao.getUserById(id));
     }
 
+
     @Override
     @Transactional
-    public List<User> getAllUser() {
-        return userDao.getAllUser();
+    public List<UserDTO> getAllUser() {
+        return userConverterService.getUserByEntity(userDao.getAllUser());
     }
 
 
@@ -54,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void addUser(User user) {
-        userDao.addUser(user);
+    public void addUser(UserDTO userDTO) {
+        userDao.addUser(userConverterService.getUserByUserDTO(userDTO));
     }
 
     @Override

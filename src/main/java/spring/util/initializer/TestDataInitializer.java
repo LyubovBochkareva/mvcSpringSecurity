@@ -1,6 +1,8 @@
 package spring.util.initializer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import spring.converter.RoleConverterService;
+import spring.converter.UserConverterService;
 import spring.model.Role;
 import spring.model.User;
 import spring.service.abstr.UserService;
@@ -19,7 +21,10 @@ public class TestDataInitializer {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserConverterService userConverterService;
 
+    
     private void init() {
 
 //		<---Creating roles--->
@@ -44,6 +49,6 @@ public class TestDataInitializer {
         admin.setRoles(roleListAdmin);
 
 //		<---Adding users into a DB--->
-        userService.addUser(admin);
+        userService.addUser(userConverterService.getUserByEntity(admin));
     }
 }

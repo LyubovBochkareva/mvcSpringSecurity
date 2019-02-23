@@ -9,6 +9,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
+import spring.converter.RoleConverterService;
 import spring.model.Role;
 import spring.service.abstr.RoleService;
 
@@ -25,6 +26,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private RoleConverterService roleConverterService;
     private Role roleAdmin;
     private Role roleUser;
 
@@ -69,14 +73,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private Role getAdminRole() {
         if (roleAdmin == null) {
-            roleAdmin = roleService.getRoleByRoleName("ADMIN");
+            roleAdmin = roleConverterService.getRoleByRoleDTO(roleService.getRoleByRoleName("ADMIN"));
         }
         return roleAdmin;
     }
 
     private Role getUserRole() {
         if (roleUser == null) {
-            roleUser = roleService.getRoleByRoleName("USER");
+            roleUser = roleConverterService.getRoleByRoleDTO(roleService.getRoleByRoleName("USER"));
         }
         return roleUser;
     }

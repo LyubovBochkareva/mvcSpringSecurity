@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import spring.dto.RoleDTO;
+import spring.dto.UserDTO;
 import spring.model.Role;
 import spring.model.User;
 import spring.service.abstr.RoleService;
@@ -31,13 +33,13 @@ public class RegistrationController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public ModelAndView saveNewUser() {
         ModelAndView model = new ModelAndView("registration");
-        model.addObject("user", new User());
+        model.addObject("user", new UserDTO());
         return model;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView getRegistrationForm(@RequestParam(value = "confirmPassword") String confirmPassword,
-                                            @Valid User userFromPage, BindingResult bindingResult) {
+                                            @Valid UserDTO userFromPage, BindingResult bindingResult) {
 
         ModelAndView model = new ModelAndView("registration");
         model.addObject("user", userFromPage);
@@ -63,8 +65,8 @@ public class RegistrationController {
             model.addObject("errorUsername", "Duplicate email");
             return model;
         } else {
-            Role role = roleService.getRoleByRoleName("USER");
-            List<Role> roles = new ArrayList<>();
+            RoleDTO role = roleService.getRoleByRoleName("USER");
+            List<RoleDTO> roles = new ArrayList<>();
             roles.add(role);
             userFromPage.setRoles(roles);
             userService.addUser(userFromPage);

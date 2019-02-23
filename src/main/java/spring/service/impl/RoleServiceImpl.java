@@ -35,13 +35,14 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
-    public Role getRoleByRoleName(String roleName) {
+    public RoleDTO getRoleByRoleName(String roleName) {
         Role roleFromDB = roleDao.getRoleByRoleName(roleName);
+
 
         if (roleFromDB == null) {
             throw new NotFoundException("The role is not found.");
         }
-        return roleFromDB;
+        return roleConverterService.getRoleByEntity(roleFromDB);
     }
 
     public Role getRoleById(Long id) {
