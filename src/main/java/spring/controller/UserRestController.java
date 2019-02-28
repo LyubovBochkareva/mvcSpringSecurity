@@ -39,7 +39,7 @@ public class UserRestController {
     }
 
 
-    @GetMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity deleteUserGet(@PathVariable("id") Long id) {
        return userServiceImpl.deleteUserRestGet(id);
     }
