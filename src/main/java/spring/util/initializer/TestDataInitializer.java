@@ -32,10 +32,13 @@ public class TestDataInitializer {
         roleAdmin.setName("ADMIN");
         Role roleUser = new Role();
         roleUser.setName("USER");
+        Role roleRestClient = new Role();
+        roleRestClient.setName("RESTCLIENT");
 
 //		<---Adding roles into a DB--->
         roleService.addRole(roleAdmin);
         roleService.addRole(roleUser);
+        roleService.addRole(roleRestClient);
 
 //		<---Creating users--->
         List<Role> roleListAdmin = new LinkedList<>();
