@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import spring.dto.UserDTO;
 import spring.dto.UserResponse;
 import spring.service.abstr.UserService;
@@ -22,11 +23,22 @@ public class UserRestController {
         this.userServiceImpl = userServiceImpl;
     }
 
+    @GetMapping()
+    public ModelAndView getRestClientIndexPage() {
+        return new ModelAndView("restClient");
+    }
+
 
     @GetMapping(value = "/")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> userDTOList = userServiceImpl.getAllUser();
         return new ResponseEntity<>(userDTOList, userDTOList != null ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/get/{username}")
+    public ResponseEntity getUserByLogin(@PathVariable("username") String  username){
+        UserDTO userDTO = userServiceImpl.getUserDTOByLogin(username);
+        return new ResponseEntity<>(userDTO, userDTO != null ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)

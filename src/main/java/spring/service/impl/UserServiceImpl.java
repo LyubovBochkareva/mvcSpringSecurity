@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UserDTO user) {
-
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userDao.updateUser(userConverterService.getUserByUserDTO(user));
     }
 
@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByLogin(String login) {
         return userDao.getUserByLogin(login);
+    }
+
+    @Override
+    public UserDTO getUserDTOByLogin(String login) {
+        return userConverterService.getUserByEntity(userDao.getUserByLogin(login));
     }
 
     @Override

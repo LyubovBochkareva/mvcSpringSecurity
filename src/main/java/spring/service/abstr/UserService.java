@@ -18,6 +18,7 @@ public interface UserService{
     UserDTO getUserById(Long id);
     void updateUser(UserDTO user);
     User getUserByLogin(String login);
+    UserDTO getUserDTOByLogin(String login);
     UserResponse addListUsersRest(List<UserDTO> userDTOList);
     UserResponse deleteListUsersRest(List<UserDTO> userDTOList);
     ResponseEntity addUserRestPost(UserDTO userDTO);

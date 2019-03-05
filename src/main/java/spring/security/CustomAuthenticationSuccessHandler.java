@@ -31,6 +31,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private RoleConverterService roleConverterService;
     private Role roleAdmin;
     private Role roleUser;
+    private Role roleRestClient;
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -66,6 +67,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             return "/admin";
         } else if (authorities.contains(getUserRole())) {
             return "/user";
+        } else if (authorities.contains(getRestClientRole())) {
+            return "/api/users";
         } else {
             throw new IllegalStateException();
         }
@@ -83,5 +86,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             roleUser = roleConverterService.getRoleByRoleDTO(roleService.getRoleByRoleName("USER"));
         }
         return roleUser;
+    }
+
+    private Role getRestClientRole() {
+        if (roleRestClient == null) {
+            roleRestClient = roleConverterService.getRoleByRoleDTO(roleService.getRoleByRoleName("RESTCLIENT"));
+        }
+        return roleRestClient;
     }
 }
