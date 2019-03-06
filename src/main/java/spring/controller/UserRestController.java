@@ -23,12 +23,6 @@ public class UserRestController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @GetMapping()
-    public ModelAndView getRestClientIndexPage() {
-        return new ModelAndView("restClient");
-    }
-
-
     @GetMapping(value = "/")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> userDTOList = userServiceImpl.getAllUser();
