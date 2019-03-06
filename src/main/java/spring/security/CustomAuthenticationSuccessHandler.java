@@ -68,7 +68,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         } else if (authorities.contains(getUserRole())) {
             return "/user";
         } else if (authorities.contains(getRestClientRole())) {
-            return "/api/users/";
+            return "/api/users";
         } else {
             throw new IllegalStateException();
         }
