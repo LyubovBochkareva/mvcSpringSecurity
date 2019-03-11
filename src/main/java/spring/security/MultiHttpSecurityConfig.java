@@ -28,16 +28,12 @@ public class MultiHttpSecurityConfig {
 
     private static AuthenticationEntryPointImpl authenticationEntryPointImpl;
 
-    private static MySavedRequestAwareAuthenticationSuccessHandler mySuccessHandler;
-
-    private static SimpleUrlAuthenticationFailureHandler myFailureHandler = new SimpleUrlAuthenticationFailureHandler();
 
     @Autowired
-    public MultiHttpSecurityConfig(AuthenticationService authenticationService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, AuthenticationEntryPointImpl authenticationEntryPointImpl, MySavedRequestAwareAuthenticationSuccessHandler mySuccessHandler) {
+    public MultiHttpSecurityConfig(AuthenticationService authenticationService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, AuthenticationEntryPointImpl authenticationEntryPointImpl) {
         this.authenticationService = authenticationService;
         MultiHttpSecurityConfig.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         MultiHttpSecurityConfig.authenticationEntryPointImpl = authenticationEntryPointImpl;
-        MultiHttpSecurityConfig.mySuccessHandler = mySuccessHandler;
     }
 
     @Bean
@@ -70,26 +66,35 @@ public class MultiHttpSecurityConfig {
         }
     }
 
+   /* @Configuration  нерабочий
+    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .authorizeRequests()
+                    .antMatchers("/api/**").hasRole("RESTCLIENT")
+                    .and()
+                    .httpBasic().realmName("autorization")
+                    .authenticationEntryPoint(authenticationEntryPointImpl)
+                    .and().csrf().disable();
+        }
+    }*/
+
+
     @Configuration
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .csrf().disable()
-                    .antMatcher("/api/users/**")
-                    .authorizeRequests()
-                    .anyRequest().hasRole("RESTCLIENT")
+                    .antMatcher("/api/**")
+                    .authorizeRequests().anyRequest().authenticated()
                     .and()
-                    .httpBasic()
-                    .authenticationEntryPoint(authenticationEntryPointImpl)
-                    .and()
-                    .formLogin()
-                    .successHandler(mySuccessHandler)
-                    .failureHandler(myFailureHandler)
-                    .and()
-                    .logout();
+                    .httpBasic().realmName("autorization")
+                    .authenticationEntryPoint(authenticationEntryPointImpl);
         }
     }
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

@@ -26,7 +26,7 @@ public class AuthenticationEntryPointImpl extends BasicAuthenticationEntryPoint 
     @Override
     public void afterPropertiesSet() throws Exception {
         // RealmName appears in the login window (Firefox).
-        setRealmName("o7planning");
+        setRealmName("autorization");
         super.afterPropertiesSet();
     }
 
