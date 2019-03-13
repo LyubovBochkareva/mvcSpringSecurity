@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -66,17 +67,18 @@ public class MultiHttpSecurityConfig {
         }
     }
 
-   /* @Configuration  нерабочий
+    /*@Configuration
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/api/**").hasRole("RESTCLIENT")
+                    .mvcMatchers("/api/**").hasRole("RESTCLIENT")
                     .and()
-                    .httpBasic().realmName("autorization")
+                    .httpBasic()
+                    .realmName("spring-app")
                     .authenticationEntryPoint(authenticationEntryPointImpl)
-                    .and().csrf().disable();
+                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         }
     }*/
 
@@ -90,7 +92,7 @@ public class MultiHttpSecurityConfig {
                     .antMatcher("/api/**")
                     .authorizeRequests().anyRequest().authenticated()
                     .and()
-                    .httpBasic().realmName("autorization")
+                    .httpBasic().realmName("spring-app")
                     .authenticationEntryPoint(authenticationEntryPointImpl);
         }
     }
