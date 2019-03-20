@@ -15,12 +15,14 @@ import org.json.simple.parser.ParseException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import spring.model.Role;
 import spring.model.User;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,8 +41,8 @@ public class TokenController {
     private static final String PROTECTED_RESOURCE_URL = "https://api.vk.com/method/users.get?v="
             + VkontakteApi.VERSION;
 
-    @RequestMapping("/callback/")
-    public ModelAndView tokenValue(ModelAndView modelAndView, @RequestParam(value = "code") String code) throws InterruptedException, ExecutionException, IOException, ParseException {
+    @RequestMapping(value = "/callback/", method = RequestMethod.GET)
+    public void tokenValue (HttpServletResponse response, @RequestParam(value = "code") String code) throws InterruptedException, ExecutionException, IOException, ParseException {
         final OAuth2AccessToken accessToken = service.getAccessToken(code);
         final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
         service.signRequest(accessToken, request);
@@ -65,7 +67,6 @@ public class TokenController {
                         user.getUsername(),
                         user.getPassword(),
                         user.getAuthorities()));
-        modelAndView.setViewName("user");
-        return modelAndView;
+        response.sendRedirect("/user");
     }
 }
