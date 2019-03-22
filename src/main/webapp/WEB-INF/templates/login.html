@@ -3,18 +3,56 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Login page</title>
     <link th:replace="fragments :: link_css"></link>
+    <style type="text/css">
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #eee;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+
+        .form-signin .form-control {
+            position: relative;
+            height: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+        .form-signin input[type="text"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
 </head>
 <body onload='document.loginForm.username.focus();'>
-<h1 align="center" class="login-h1">Login page</h1>
 
 <div class="container">
     <form class="form-signin" name='loginForm' action="" method='POST'>
-        <input class="form-control" placeholder="login" type="text" name="username"/>
-        <input class="form-control" placeholder="password" type="password" name="password"/>
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Login"/>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required=""/>
         <div class="${not empty error}?('error') bg-danger" th:text="${error}"></div>
         <div class="${not empty msg}?('msg') bg-danger" th:text="${msg}"></div>
         <br/>
-        <input class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="Login"/>
+        <input class="btn btn-lg btn-primary btn-block" name="submit" type="submit" value="Sign in"/>
         <a class="btn btn-lg btn-primary btn-block" href="/registration">Registration</a>
         <a class="btn btn-lg btn-primary btn-block" href="/autorization">Login in VK</a>
     </form>
