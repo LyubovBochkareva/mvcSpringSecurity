@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>User</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -8,10 +8,20 @@
 <body>
 <th:block th:replace="fragments :: header-panel"></th:block>
 
-<div class="container-fluid">
-    <div class="row">
-        <h2 align="center">User page</h2>
+<div class="row flex-xl-nowrap">
+    <!-- sidebar -->
+        <div class="col-12 col-md-2 col-xl-2 bd-sidebar">
+            <ul class="nav">
+                <li><a href="/user/">User</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')">
+                    <a href="/admin">Admin</a>
+                </li>
+
+            </ul>
+        </div>
+        <main class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content" role="main">
+            <h1>User page</h1>
+        </main>
     </div>
-</div>
 </body>
 </html>

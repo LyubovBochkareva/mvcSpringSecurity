@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Add product</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -9,26 +9,51 @@
 
 <th:block th:replace="fragments :: header-panel"></th:block>
 
-<div class="container">
-    <div class="row">
-        <h1 class="page-header">Add user</h1>
-        <div class="table-responsive">
+<div class="bs-docs-sidebar">
+    <!-- sidebar -->
+    <div class="col-12 col-md-2 col-xl-2 bd-sidebar">
+        <ul class="nav">
+
+            <li><a href="/user/">User</a></li>
+            <li sec:authorize="hasAuthority('ADMIN')">
+                <a href="/admin">Admin</a>
+            </li>
+
+        </ul>
+    </div>
+    <main class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content" role="main">
+        <h1>Admin panel</h1>
+
+        <ul class="nav nav-tabs">
+            <li><a href="/admin">Users table</a></li>
+            <li class="active">New User</li>
+        </ul>
+
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th colspan="7" bgcolor="#e7e7e7">Add new user</th>
+            </tr>
+            </thead>
+            <tr>
+                <div>
             <form th:action="@{/admin/users/add}" th:method="post" th:object="${user}">
                 <div class="container">
-                        <input placeholder="login" maxlength="50" required="required" class="form-control" type="text"
-                               th:field="*{username}"/>
+                    <input placeholder="login" maxlength="50" required="required" class="form-control" type="text"
+                           th:field="*{username}"/>
 
-                        <input placeholder="password" required="required" minlength="4" maxlength="30"
-                               class="form-control" type="password" th:field="*{password}"/>
+                    <input placeholder="password" required="required" minlength="4" maxlength="30"
+                           class="form-control" type="password" th:field="*{password}"/>
 
-                        <input placeholder="confirm password" required="required" class="form-control" type="password"
-                               name="confirmPassword" minlength="4" maxlength="30"/>
+                    <input placeholder="confirm password" required="required" class="form-control" type="password"
+                           name="confirmPassword" minlength="4" maxlength="30"/>
 
-                        <input placeholder="name" required="required" class="form-control" type="text"
-                               th:field="*{name}"/>
+                    <input placeholder="name" required="required" class="form-control" type="text"
+                           th:field="*{name}"/>
 
-                        <input placeholder="age" required="required" class="form-control" type="number"
-                               th:field="*{age}"/>
+                    <input placeholder="age" required="required" class="form-control" type="number"
+                           th:field="*{age}"/>
                     <select th:field="*{roles}" multiple="multiple">
                         <th:block th:each="role : ${allRoles}">
                             <option th:if="${role!= null}"
@@ -38,11 +63,13 @@
                         </th:block>
                     </select>
 
-                <button type="submit" class="btn btn-lg btn-success">Add</button>
+                    <button type="submit" class="btn btn-lg btn-success">Add</button>
                 </div>
             </form>
-        </div>
-    </div>
+                </div>
+            </tr>
+        </table>
+    </main>
 </div>
 </body>
 </html>

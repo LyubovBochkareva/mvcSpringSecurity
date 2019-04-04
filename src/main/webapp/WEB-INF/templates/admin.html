@@ -1,17 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Admin</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link th:replace="fragments :: link_css"></link>
+    <link th:replace="fragments :: link_css"/>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/admin.css"/>
 </head>
 <body>
 <th:block th:replace="fragments :: header-panel"></th:block>
 
-<div class="container-fluid">
-    <div class="row">
-        <h2 align="center">Admin page</h2>
+
+<div class="bs-docs-sidebar">
+        <!-- sidebar -->
+        <div class="col-12 col-md-2 col-xl-2 bd-sidebar">
+            <ul class="nav">
+
+                <li><a href="/user/">User</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')">
+                    <a href="/admin">Admin</a>
+                </li>
+
+            </ul>
+        </div>
+        <main class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content" role="main">
+            <h1>Admin panel</h1>
+
+            <div class="tabbable"> <!-- Only required for left/right tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="/admin" data-toggle="tab">All Users</a></li>
+                    <li><a aria-labelledby="#addUser" data-target="#" data-toggle="tab">New User</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="/admin">
+                        <table class="table table-striped">
+                            <tr>
+                                <td><b>Role</b></td>
+                                <td><b>Login</b></td>
+                                <td><b>Password</b></td>
+                                <td><b>Name</b></td>
+                                <td><b>Age</b></td>
+                                <td><b>Edit</b></td>
+                                <td><b>Delete</b></td>
+                            </tr>
+                            <tr th:each="user : ${listUsers}">
+                                <td th:field="*{user.roles}">
+                                <th:block th:each="role : ${user.roles}">
+                                    <option th:if="${role!= null}"
+                                            th:value="${role}"
+                                            th:text="${role.getName()}">
+                                    </option>
+                                </th:block></td>
+                                <td th:text="${user.username}">Login</td>
+                                <td th:text="${user.password}">Password</td>
+                                <td th:text="${user.name}">Name</td>
+                                <td th:text="${user.age}">Age</td>
+                                <td>
+                                    <a href="" th:href="@{/admin/users/update/__${user.id}__}">
+                                        <button type="button" class="btn btn-info btn-success">Update</button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" th:href="@{/admin/users/delete/__${user.id}__}">
+                                        <button type="button" class="btn btn-danger btn-success">Delete</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="addUser">
+                        <p>Привет, я 2-я секция.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-</div>
 </body>
 </html>
+

@@ -27,13 +27,8 @@ public class AdminController {
 
 
     @GetMapping()
-    public ModelAndView getAdminIndexPage() {
-        return new ModelAndView("admin");
-    }
-
-    @GetMapping(value = "/users")
     public ModelAndView getAllUsers() {
-        ModelAndView modelAndView = new ModelAndView("allUsers");
+        ModelAndView modelAndView = new ModelAndView("admin");
         modelAndView.addObject("listUsers", userServiceImpl.getAllUser());
         return modelAndView;
     }
@@ -60,7 +55,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping(value = "/users/add")
+    @GetMapping(value = "#add")
     public ModelAndView addUserGet() {
         ModelAndView modelAndView = new ModelAndView("addUser");
         modelAndView.addObject("user", new UserDTO());
