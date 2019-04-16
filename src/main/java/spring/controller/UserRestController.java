@@ -34,15 +34,14 @@ public class UserRestController {
         return new ResponseEntity<>(userDTO, userDTO != null ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity updateUserPost(@RequestBody UserDTO userDTO) {
         if (userDTO.getId() != null) {
             userServiceImpl.updateUser(userDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
+    }*/
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity deleteUserGet(@PathVariable("id") Long id) {

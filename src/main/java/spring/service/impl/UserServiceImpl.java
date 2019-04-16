@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
-import spring.converter.RoleConverterService;
 import spring.converter.UserConverterService;
 import spring.dao.abstr.UserDao;
 import spring.dto.RoleDTO;
@@ -15,7 +14,6 @@ import spring.dto.UserResponse;
 import spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.service.abstr.RoleService;
 import spring.service.abstr.UserService;
 import spring.util.validation.PasswordValidator;
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
@@ -48,7 +45,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @Transactional
     public List<UserDTO> getAllUser() {
         return userConverterService.getUserByEntity(userDao.getAllUser());
     }
@@ -61,14 +57,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Transactional
     @Override
     public void deleteUser(Long id) {
         userDao.deleteUser(id);
     }
 
     @Override
-    @Transactional
     public void addUser(UserDTO userDTO) {
         userDao.addUser(userConverterService.getUserByUserDTO(userDTO));
     }
