@@ -4,24 +4,32 @@
     <title>User</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link th:replace="fragments :: link_css"></link>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/user.css"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
 </head>
 <body>
 <th:block th:replace="fragments :: header-panel"></th:block>
 
-<div class="row flex-xl-nowrap">
-    <!-- sidebar -->
-        <div class="col-12 col-md-2 col-xl-2 bd-sidebar">
-            <ul class="nav">
-                <li><a href="/user/">User</a></li>
-                <li sec:authorize="hasAuthority('ADMIN')">
-                    <a href="/admin">Admin</a>
-                </li>
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+    <ul class="nav">
+        <li class="nav-item">
+        <li sec:authorize="hasAuthority('ADMIN')">
+            <a class="nav-link" href="/admin">Admin
+            </a>
+        </li>
+        </li>
+        <li class="nav-item">
+            <a class="active"  href="/user">User
+            </a>
+        </li>
+    </ul>
+</div>
 
-            </ul>
-        </div>
-        <main class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content" role="main">
-            <h1>User page</h1>
-        </main>
+
+<div style="margin-left:15%">
+    <div class="w3-container">
+        <h1>User page</h1>
     </div>
+</div>
 </body>
 </html>

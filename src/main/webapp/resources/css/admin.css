@@ -1,17 +1,21 @@
-h1 {
-    font-size: xx-large;
-    font-family: sans-serif;
-    color : #000;
-    font-weight: bold;
+.w3-container{
+    background-color: #a4a299;
+    min-height: 94.3vh;
 }
 
-table {
-    width: 50%;
-    border: solid #e7e7e7;
-    padding: 20% 5% 40%;
+.outer{
+    text-align: center;
 }
 
-.bs-docs-sidenav {
-    background-color: #edf2f5;
+li a.active {
+    background-color: #3578af;
+    color: white;
 }
+
+li a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+}
+
 

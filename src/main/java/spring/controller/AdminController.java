@@ -1,5 +1,6 @@
 package spring.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.dto.UserDTO;
@@ -8,6 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import spring.service.abstr.RoleService;
 import spring.service.abstr.UserService;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @RequestMapping(value = "/admin")
@@ -44,9 +50,21 @@ public class AdminController {
 
 
     @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
-    public String updateUserPost(@PathVariable("id") Long id, UserDTO userFromPage) {
+    public String updateUserPost(@PathVariable("id") Long id, UserDTO userFromPage, HttpServletRequest request, HttpServletResponse response) {
         userServiceImpl.updateUser(userFromPage);
-        return "redirect:/admin";
+        if(userFromPage.getRoles().contains(roleService.getRoleByRoleName("ADMIN"))) {
+            return "redirect:/admin";
+        } else{
+            HttpSession session;
+            SecurityContextHolder.clearContext();
+            session= request.getSession(false);
+            if(session != null) {
+                session.invalidate();
+            }
+            for(Cookie cookie : request.getCookies()) {
+                cookie.setMaxAge(0);
+            }
+        } return "redirect:/login";
     }
 
 

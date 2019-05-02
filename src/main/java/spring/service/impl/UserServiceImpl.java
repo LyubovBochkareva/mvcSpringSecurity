@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
+import spring.converter.RoleConverterService;
 import spring.converter.UserConverterService;
 import spring.dao.abstr.UserDao;
 import spring.dto.RoleDTO;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserConverterService userConverterService;
+
     @Autowired
     private RoleService roleService;
 
@@ -150,7 +152,7 @@ public class UserServiceImpl implements UserService {
             return model;
         } else if (!isConfEqualToPass) {
             model.addObject("errorConfirm", "Error confirm pass");
-            return model;
+                return model;
         }
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -161,7 +163,7 @@ public class UserServiceImpl implements UserService {
         boolean isUser = userDao.getUserByLogin(username) != null;
 
         if (isUser) {
-            model.addObject("errorUsername", "Duplicate email");
+            model.addObject("errorUsername", "Duplicate login");
             return model;
         } else {
             RoleDTO role = roleService.getRoleByRoleName("USER");
