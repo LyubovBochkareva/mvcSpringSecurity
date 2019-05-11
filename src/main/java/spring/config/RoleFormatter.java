@@ -10,11 +10,13 @@ public class RoleFormatter implements Formatter<RoleDTO> {
 
     @Override
     public String print(RoleDTO roleDTO, Locale locale) {
+
         return roleDTO != null ? roleDTO.toString() : null;
     }
 
     @Override
     public RoleDTO parse(String text, Locale locale) {
-            return new Gson().fromJson(text, RoleDTO.class);
+
+        return new Gson().fromJson(text, RoleDTO.class);
     }
 }

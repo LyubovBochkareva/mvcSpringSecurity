@@ -97,6 +97,7 @@ public class HibernateConfig {
 
     @Bean(initMethod = "init")
     public TestDataInitializer initTestData() {
+
         return new TestDataInitializer();
     }
 }

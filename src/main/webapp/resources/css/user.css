@@ -1,9 +1,14 @@
+.w3-sidebar{
+    min-width: 15%;
+}
+
 li a.active {
     background-color: #3578af;
     color: white;
 }
 
 .w3-container {
+    margin-left: 15%;
     background-color: #a4a299;
     min-height: 94.3vh;
 }

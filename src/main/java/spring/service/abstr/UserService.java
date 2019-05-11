@@ -24,4 +24,5 @@ public interface UserService{
     ResponseEntity addUserRestPost(UserDTO userDTO);
     ResponseEntity deleteUserRestGet(Long id);
     ModelAndView getRegistrationForm(UserDTO userDTO, String confirmPassword, BindingResult bindingResult);
+    ModelAndView getAddNewUserForm(UserDTO userDTO);
 }

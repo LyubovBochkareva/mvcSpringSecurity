@@ -19,11 +19,15 @@ public class RoleServiceImpl implements RoleService {
 
     private final static Logger logger = Logger.getLogger(RoleServiceImpl.class);
 
-    @Autowired
-    private RoleDao roleDao;
+    private final RoleDao roleDao;
+
+    private final RoleConverterService roleConverterService;
 
     @Autowired
-    private RoleConverterService roleConverterService;
+    public RoleServiceImpl(RoleDao roleDao, RoleConverterService roleConverterService) {
+        this.roleDao = roleDao;
+        this.roleConverterService = roleConverterService;
+    }
 
     public void addRole(Role role) {
         try {

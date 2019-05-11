@@ -1,4 +1,9 @@
+.w3-sidebar{
+    min-width: 15%;
+}
+
 .w3-container{
+    margin-left: 15%;
     background-color: #a4a299;
     min-height: 94.3vh;
 }

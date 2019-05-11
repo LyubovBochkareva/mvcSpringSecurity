@@ -1,49 +1,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <link th:replace="fragments :: link_css"></link>
+    <link th:replace="fragments :: link_css"/>
     <title>Registration page</title>
-    <style type="text/css">
-        body {
-            padding-top: 2%;
-            padding-bottom: 2%;
-            background-color: #eee;
-        }
-
-        .form-signin {
-            max-width: 30%;
-            padding: auto;
-            margin: 0 auto;
-        }
-
-        .form-signin .form-control {
-            position: relative;
-            height: auto;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            padding: 3%;
-            font-size: medium;
-        }
-
-
-        .form-signin input[type="password"] {
-            margin-bottom: 3%;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/registration.css"/>
 </head>
 <body>
 <div class="container">
     <form class="form-signin" th:method="POST" th:object="${user}">
         <h2 class="form-signin-heading">Registration</h2>
-        <input type="text" class="form-control" maxlength="50" name="username" placeholder="Login" required="" th:field="*{username}"/>
+        <input type="text" class="form-control" maxlength="50" name="username" placeholder="Login" required=""
+               th:field="*{username}"/>
         <div class="bg-danger" th:text="${errorUsername}">Username Error</div>
-        <input type="password" class="form-control" th:field="*{password}" placeholder="Password" name="password" required="" minlength="4" maxlength="30"/>
+        <input type="password" class="form-control" th:field="*{password}" placeholder="Password" name="password"
+               required="" minlength="4" maxlength="30"/>
         <div class="bg-danger" th:text="${errorPassword}">Password Error</div>
-        <input type="password" class="form-control" placeholder="Confirm password" name="confirmPassword" required="" minlength="4" maxlength="30"/>
-        <div class="bg-danger" th:if="${errorConfirm != null}" style="font-size: 13px">
+        <input type="password" class="form-control" placeholder="Confirm password" name="confirmPassword" required=""
+               minlength="4" maxlength="30"/>
+        <div class="bg-danger" th:if="${errorConfirm != null}">
             <h3 th:text="${errorConfirm}"></h3>
         </div>
 
@@ -57,12 +31,12 @@
 
         <input class="btn btn-lg btn-primary btn-block" type="submit" name="add" value="Registration"/>
 
-    <a href="" th:href="@{/login}">
-        <button type="button" class="btn btn-lg btn-primary btn-block" value="Login">Sign in</button>
-    </a>
-    <div th:if="${congratulations != null}" style="font-size: 13px">
-        <h3 th:text="${congratulations}" style="font-size: 18px; color: forestgreen"></h3>
-    </div>
+        <a href="" th:href="@{/login}">
+            <button type="button" class="btn btn-lg btn-primary btn-block" value="Login">Sign in</button>
+        </a>
+        <div class="addOk" th:if="${congratulations != null}">
+            <h3 th:text="${congratulations}"></h3>
+        </div>
     </form>
 </div>
 </body>

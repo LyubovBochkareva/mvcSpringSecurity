@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
-import spring.converter.RoleConverterService;
 import spring.converter.UserConverterService;
 import spring.dao.abstr.UserDao;
 import spring.dto.RoleDTO;
@@ -27,15 +26,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
-    @Autowired
-    private UserConverterService userConverterService;
+    private final UserConverterService userConverterService;
+
+    private final RoleService roleService;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, RoleService roleService, UserConverterService userConverterService) {
         this.userDao = userDao;
+        this.roleService = roleService;
+        this.userConverterService = userConverterService;
     }
 
 
@@ -138,6 +137,32 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ModelAndView getAddNewUserForm(UserDTO userFromPage) {
+        ModelAndView model = new ModelAndView("admin");
+        model.addObject("userFromPage", userFromPage);
+        model.addObject("allRoles", roleService.getAllRoles());
+
+
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userFromPage.setPassword(passwordEncoder.encode(userFromPage.getPassword()));
+
+
+        String username = userFromPage.getUsername();
+        boolean isUser = userDao.getUserByLogin(username) != null;
+
+        if (isUser) {
+            model.addObject("errorUsername", "Duplicate login");
+            return model;
+        } else {
+            userDao.addUser(userConverterService.getUserByUserDTO(userFromPage));
+            model.addObject("listUsers", getAllUser());
+            model.setViewName("redirect:/admin");
+            return model;
+        }
     }
 
     @Override

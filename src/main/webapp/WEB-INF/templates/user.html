@@ -3,14 +3,14 @@
 <head>
     <title>User</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link th:replace="fragments :: link_css"></link>
+    <link th:replace="fragments :: link_css"/>
     <link rel="stylesheet" type="text/css" href="../../resources/css/user.css"/>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+    <link rel="stylesheet" type="text/css" href="../../resources/com/w3schools/w3css/4/w3.css"/>
 </head>
 <body>
 <th:block th:replace="fragments :: header-panel"></th:block>
 
-<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+<div class="w3-sidebar w3-light-grey w3-bar-block">
     <ul class="nav">
         <li class="nav-item">
         <li sec:authorize="hasAuthority('ADMIN')">
@@ -25,11 +25,9 @@
     </ul>
 </div>
 
-
-<div style="margin-left:15%">
     <div class="w3-container">
         <h1>User page</h1>
     </div>
-</div>
+
 </body>
 </html>
